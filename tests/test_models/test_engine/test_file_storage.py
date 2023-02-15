@@ -113,3 +113,39 @@ class TestFileStorage(unittest.TestCase):
         with open("file.json", "r") as f:
             js = f.read()
         self.assertEqual(json.loads(string), json.loads(js))
+
+
+    def test_get_file_storage_existing_obj():
+    """ test file storage existing obj"""
+        fs = FileStorage()
+        state = State(name="California")
+        fs.new(state)
+        fs.save()
+        assert fs.get(State, state.id) == state
+
+    def test_get_file_storage_non_existing_obj():
+     """ test file storage non existing obj"""
+        fs = FileStorage()
+        assert fs.get(State, "non_existing_id") == None
+
+    def test_count_file_storage_all_objects():
+     """ test file storage all obj"""
+        fs = FileStorage()
+        state1 = State(name="California")
+        state2 = State(name="Texas")
+        fs.new(state1)
+        fs.new(state2)
+        fs.save()
+        assert fs.count() == 2
+
+    def test_count_file_storage_specific_class():
+     """ test file storage specific class"""
+        fs = FileStorage()
+        state1 = State(name="California")
+        state2 = State(name="Texas")
+        user1 = User(email="test@test.com", password="password")
+        fs.new(state1)
+        fs.new(state2)
+        fs.new(user1)
+        fs.save()
+        assert fs.count(State) == 2

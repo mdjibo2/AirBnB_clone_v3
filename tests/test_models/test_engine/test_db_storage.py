@@ -66,6 +66,42 @@ test_db_storage.py'])
                              "{:s} method needs a docstring".format(func[0]))
             self.assertTrue(len(func[1].__doc__) >= 1,
                             "{:s} method needs a docstring".format(func[0]))
+    
+    def test_get_db_storage_existing_obj():
+    """test for db storage existing onject"""
+        db = DBStorage()
+        state = State(name="California")
+        db.new(state)
+        db.save()
+        assert db.get(State, state.id) == state
+
+    def test_get_db_storage_non_existing_obj():
+    """test dbstorage non existing object"""
+        db = DBStorage()
+        assert db.get(State, "non_existing_id") == None
+
+    def test_count_db_storage_all_objects():
+    """ test db storage all objects"""    
+        db = DBStorage()
+        state1 = State(name="California")
+        state2 = State(name="Texas")
+        db.new(state1)
+        db.new(state2)
+        db.save()
+        assert db.count() == 2
+
+    def test_count_db_storage_specific_class():
+    """test db storage specific class"""
+        db = DBStorage()
+        state1 = State(name="California")
+        state2 = State(name="Texas")
+        user1 = User(email="test@test.com", password="password")
+        db.new(state1)
+        db.new(state2)
+        db.new(user1)
+        db.save()
+        assert db.count(State) == 2
+
 
 
 class TestFileStorage(unittest.TestCase):
@@ -86,3 +122,40 @@ class TestFileStorage(unittest.TestCase):
     @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
     def test_save(self):
         """Test that save properly saves objects to file.json"""
+
+
+        def test_get_db_storage_existing_obj():
+    """test for db storage existing onject"""
+        db = DBStorage()
+        state = State(name="California")
+        db.new(state)
+        db.save()
+        assert db.get(State, state.id) == state
+
+    def test_get_db_storage_non_existing_obj():
+    """test dbstorage non existing object"""
+        db = DBStorage()
+        assert db.get(State, "non_existing_id") == None
+
+    def test_count_db_storage_all_objects():
+    """ test db storage all objects"""
+        db = DBStorage()
+        state1 = State(name="California")
+        state2 = State(name="Texas")
+        db.new(state1)
+        db.new(state2)
+        db.save()
+        assert db.count() == 2
+
+    def test_count_db_storage_specific_class():
+    """test db storage specific class"""
+        db = DBStorage()
+        state1 = State(name="California")
+        state2 = State(name="Texas")
+        user1 = User(email="test@test.com", password="password")
+        db.new(state1)
+        db.new(state2)
+        db.new(user1)
+        db.save()
+        assert db.count(State) == 2
+
